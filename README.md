@@ -160,4 +160,3 @@ Created for the Ultima Online: Outlands community. Happy water hunting!
 
 ---
 
-**Questions?** Post in your guild Discord or Outlands forums!

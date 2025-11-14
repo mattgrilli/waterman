@@ -267,15 +267,35 @@ class AethericWaterGUI:
         main_frame = tk.Frame(self.root, bg=self.bg_color)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
-        # Title
+        # Title and options bar
+        title_frame = tk.Frame(main_frame, bg=self.bg_color)
+        title_frame.pack(fill=tk.X, pady=(0, 10))
+
         title_label = tk.Label(
-            main_frame, 
+            title_frame,
             text="⚗️ Aetheric Water Optimizer ⚗️",
             font=("Georgia", 20, "bold"),
             bg=self.bg_color,
             fg=self.highlight_color
         )
-        title_label.pack(pady=(0, 10))
+        title_label.pack(side=tk.LEFT, expand=True)
+
+        # Stay on top checkbox
+        self.stay_on_top_var = tk.BooleanVar(value=False)
+        stay_on_top_cb = tk.Checkbutton(
+            title_frame,
+            text="📌 Stay on Top",
+            variable=self.stay_on_top_var,
+            command=self.toggle_stay_on_top,
+            bg=self.bg_color,
+            fg=self.fg_color,
+            selectcolor=self.bg_color,
+            activebackground=self.bg_color,
+            activeforeground=self.highlight_color,
+            font=("Arial", 9),
+            cursor="hand2"
+        )
+        stay_on_top_cb.pack(side=tk.RIGHT, padx=(0, 10))
         
         # Top section - Controls
         control_frame = tk.Frame(main_frame, bg=self.bg_color)
@@ -547,7 +567,11 @@ class AethericWaterGUI:
         self.status_label.config(
             text=f"Available: {len(self.manager.waters)} | Used: {len(self.manager.used_waters)}"
         )
-    
+
+    def toggle_stay_on_top(self):
+        """Toggle the window's always-on-top state"""
+        self.root.attributes('-topmost', self.stay_on_top_var.get())
+
     def add_waters(self):
         """Add new waters from entry"""
         values_str = self.add_entry.get().strip()

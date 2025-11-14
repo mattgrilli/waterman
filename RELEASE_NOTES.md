@@ -56,10 +56,11 @@ The Aetheric Water Optimizer is a desktop application for Ultima Online: Outland
 
 ### Standalone Executable (Recommended)
 - **File:** `AethericWaterOptimizer.exe`
-- **Size:** ~10-15 MB
-- **Requirements:** None! Just download and run
+- **Size:** ~11 MB
+- **Requirements:** Administrator privileges (for saving to Razor scripts folder)
 - **Platform:** Windows 10/11
 - **No Python Installation Needed** - All dependencies bundled inside
+- **Note:** The app will prompt for admin access when launched
 
 ### Python Source
 - **File:** `watercalc.py`
@@ -74,7 +75,8 @@ The Aetheric Water Optimizer is a desktop application for Ultima Online: Outland
 ### Option 1: Executable (Easiest)
 1. Download `AethericWaterOptimizer.exe` from the releases page
 2. Double-click to run
-3. No installation or configuration required!
+3. Click "Yes" when Windows asks for administrator permission
+4. No installation or configuration required!
 
 ### Option 2: Python Source
 1. Clone or download this repository
@@ -182,6 +184,7 @@ waterman/
 - **RAM:** 50 MB minimum
 - **Disk Space:** 20 MB
 - **Display:** 800x600 minimum resolution
+- **Permissions:** Administrator access (for saving to Razor scripts folder in Program Files)
 
 ### For Python Source
 - **Python:** 3.6 or later

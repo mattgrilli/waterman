@@ -4,9 +4,12 @@ echo.
 
 REM Activate virtual environment and build
 call venv\Scripts\activate.bat
-pyinstaller --onefile --windowed --name "AethericWaterOptimizer" --icon=NONE watercalc.py
+
+REM Build using the spec file (includes admin manifest)
+pyinstaller AethericWaterOptimizer.spec --clean
 
 echo.
 echo Build complete! Executable is in the 'dist' folder.
+echo The exe will request admin privileges when run.
 echo.
 pause

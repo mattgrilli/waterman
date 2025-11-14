@@ -40,7 +40,8 @@ build/
 dist/
 *.egg-info/
 .eggs/
-*.spec
+# Keep the customized spec file for admin privileges
+# *.spec
 
 # Auto-generated scripts (keep templates)
 aetheric_picker.razor

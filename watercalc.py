@@ -39,10 +39,23 @@ class AethericWaterManager:
             json.dump(data, f, indent=2)
     
     def add_waters(self, water_values: List[float]):
-        """Add new aetheric waters to the available pool"""
+        """Add new aetheric waters to the available pool (with deduplication)"""
+        added_count = 0
+        skipped_count = 0
+
         for value in water_values:
-            self.waters.append({'value': value, 'id': len(self.waters) + len(self.used_waters)})
+            # Check if this value already exists in available or used waters
+            value_exists = any(w['value'] == value for w in self.waters)
+            value_used = any(w['value'] == value for w in self.used_waters)
+
+            if not value_exists and not value_used:
+                self.waters.append({'value': value, 'id': len(self.waters) + len(self.used_waters)})
+                added_count += 1
+            else:
+                skipped_count += 1
+
         self.save_data()
+        return added_count, skipped_count
     
     def find_best_combination(self, target: float = 7.0) -> Tuple[Optional[List[Dict]], Optional[float]]:
         """Find the combination of 3 waters that averages closest to target"""
@@ -582,13 +595,15 @@ class AethericWaterGUI:
 
         try:
             values = [float(v.strip()) for v in values_str.split(',')]
-            self.manager.add_waters(values)
+            added, skipped = self.manager.add_waters(values)
             self.add_entry.delete(0, tk.END)
             self.refresh_display()
-            messagebox.showinfo(
-                "Success",
-                f"Added {len(values)} water(s) successfully!"
-            )
+
+            message = f"✅ Added {added} water(s) successfully!"
+            if skipped > 0:
+                message += f"\n⚠️ Skipped {skipped} duplicate(s)"
+
+            messagebox.showinfo("Import Complete", message)
         except ValueError:
             messagebox.showerror(
                 "Invalid Input",
@@ -622,12 +637,27 @@ class AethericWaterGUI:
             values = self.manager.import_from_text(text)
 
             if values:
-                self.manager.add_waters(values)
-                self.refresh_display()
-                messagebox.showinfo(
-                    "Import Successful",
-                    f"Imported {len(values)} water value(s) from file!"
+                # Show confirmation dialog with preview
+                preview = "\n".join([f"  {v:.3f}" for v in values[:20]])  # Show first 20
+                if len(values) > 20:
+                    preview += f"\n  ... and {len(values) - 20} more"
+
+                confirm = messagebox.askyesno(
+                    "Confirm Import",
+                    f"Found {len(values)} water value(s) in the file:\n\n{preview}\n\n"
+                    "Add these to your available waters?",
+                    icon='question'
                 )
+
+                if confirm:
+                    added, skipped = self.manager.add_waters(values)
+                    self.refresh_display()
+
+                    message = f"✅ Added {added} water(s) from file!"
+                    if skipped > 0:
+                        message += f"\n⚠️ Skipped {skipped} duplicate(s) (already in your list)"
+
+                    messagebox.showinfo("Import Complete", message)
             else:
                 messagebox.showwarning(
                     "No Values Found",

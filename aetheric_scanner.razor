@@ -1,0 +1,37 @@
+#############################################
+# Aetheric Water Scanner – Outlands / Razor
+#
+# HOW TO USE:
+#  1. Put all Aetheric Water items in your backpack
+#  2. Run this script
+#  3. Check your journal/system messages for the output
+#  4. Copy the output to import into the Python GUI
+#
+# This script scans all aetheric waters in your
+# backpack and displays their values in the journal.
+#############################################
+
+overhead "Scanning all aetheric waters in backpack..." 88
+
+@clearignore
+getlabel backpack pingcheck
+
+@setvar! count 0
+
+# Loop through all Aetheric Water (ID 3902) in backpack
+while findtype 3902 backpack as ess
+    getlabel ess desc
+
+    # Display the full label
+    sysmsg "{{desc}}" 88
+
+    @ignore ess
+    @setvar! count count + 1
+    wait 100
+endwhile
+
+@clearignore
+
+overhead "Scan complete! Found {{count}} aetheric waters." 68
+sysmsg "Scan complete! Found {{count}} aetheric waters." 68
+sysmsg "Copy the values above and import into Python GUI" 68

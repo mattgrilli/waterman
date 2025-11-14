@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Data files
+aetheric_waters.json
+*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Auto-generated scripts (keep templates)
+aetheric_picker.razor
+aetheric_picker_used.razor
+# But keep the templates:
+!aetheric_picker_template.razor
+!aetheric_scanner.razor

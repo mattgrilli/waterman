@@ -1,0 +1,95 @@
+#############################################
+# Aetheric Water Picker – Outlands / Razor
+#
+# TEMPLATE VERSION - FOR MANUAL EDITING
+#
+# HOW TO USE:
+#  1. Put all Aetheric Water items you care about
+#     somewhere in your backpack.
+#  2. SCROLL DOWN to the big
+#        >>>>>> USER EDIT AREA <<<<<<
+#     and change ONLY the numbers in the
+#     three strings.
+#  3. Save and run the script.
+#
+# IMPORTANT:
+#  Match the label exactly:
+#    aetheric water: 8.820 aP
+#  (Same decimals, same spacing.)
+#
+# NOTE: The Python GUI can auto-generate this
+# script with the optimal values already filled in!
+#############################################
+
+@setvar! need1 1
+@setvar! need2 1
+@setvar! need3 1
+
+overhead "Aetheric picker: scanning backpack for essences..." 88
+
+@clearignore
+getlabel backpack pingcheck
+
+# Loop through all Aetheric Water (ID 3902) in backpack
+while findtype 3902 backpack as ess
+    getlabel ess desc
+    # Debug – uncomment to see labels:
+    # sysmsg "Label: {{desc}}" 88
+
+
+    ########################################################
+    # >>>>>> USER EDIT AREA – CHANGE ONLY THESE 3 BLOCKS <<<<<<
+    #
+    # Replace ONLY the numbers in the quotes below.
+    # Do NOT change:
+    #   - the words "aetheric water:" or "aP"
+    #   - the quotes
+    #   - need1/need2/need3
+    ########################################################
+
+    # VALUE 1 – edit number here (example: 8.820)
+    if need1 = 1 and "aetheric water: 8.820 aP" in desc
+        overhead "Grabbing vial 1 now" 88
+        lift ess
+        drop backpack -1 -1 -1
+        wait 650
+        @setvar! need1 0
+
+    # VALUE 2 – edit number here (example: 4.540)
+    elseif need2 = 1 and "aetheric water: 4.540 aP" in desc
+        overhead "Grabbing vial 2 now" 88
+        lift ess
+        drop backpack -1 -1 -1
+        wait 650
+        @setvar! need2 0
+
+    # VALUE 3 – edit number here (example: 5.115)
+    elseif need3 = 1 and "aetheric water: 5.115 aP" in desc
+        overhead "Grabbing vial 3 now" 88
+        lift ess
+        drop backpack -1 -1 -1
+        wait 650
+        @setvar! need3 0
+    endif
+
+    # >>>>>> END OF USER EDIT AREA <<<<<<
+    ########################################################
+
+
+    @ignore ess
+
+    # Stop once we've found all three
+    if need1 = 0 and need2 = 0 and need3 = 0
+        break
+    endif
+endwhile
+
+@clearignore
+
+if need1 = 0 and need2 = 0 and need3 = 0
+    overhead "All 3 requested essences moved to your backpack." 68
+    sysmsg "All 3 requested essences moved to your backpack." 68
+else
+    overhead "Finished scanning – some values were not found." 34
+    sysmsg "Finished scanning – some values were not found." 34
+endif

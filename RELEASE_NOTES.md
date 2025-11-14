@@ -35,6 +35,8 @@ The Aetheric Water Optimizer is a desktop application for Ultima Online: Outland
 - **Scanner Script Included** - Scan all aetheric waters in your backpack and output to journal
 - **Picker Scripts** - Automatically locate and collect the exact 3 waters you need in-game
 - **Default Save Location** - Opens directly to your Razor scripts folder
+- **Auto-Numbered Filenames** - Scripts automatically named `aetheric_picker_001.razor`, `002`, etc.
+- **Workflow Reminders** - Clear instructions about closing/relaunching UO for script loading
 
 ### Water Management
 - **Available Waters List** - View and manage your current water inventory
@@ -49,6 +51,8 @@ The Aetheric Water Optimizer is a desktop application for Ultima Online: Outland
 - **Real-time Display** - Shows water IDs, values, average, and difference from target
 - **Status Updates** - Clear feedback on all operations
 - **Responsive Layout** - Resizable window with scrollable lists
+- **Stay on Top** - Optional checkbox to keep window above UO client
+- **Script Preview** - See generated scripts before saving (matrix-style green terminal display)
 
 ---
 
@@ -259,11 +263,14 @@ Created for the Ultima Online: Outlands community.
 - Import from journal files
 - Manual water entry
 - Export scanner script directly from app
-- Auto-generate Razor picker scripts
+- Auto-generate Razor picker scripts with auto-numbering
+- Script preview window (matrix-style terminal display)
 - Water tracking (available/used lists)
 - Context menu management (restore, delete, export)
+- Stay on top window option
+- Workflow reminders for UO client restart
 - Dark theme GUI
-- Standalone Windows executable
+- Standalone Windows executable with admin privileges
 - Complete documentation
 
 ---

@@ -245,6 +245,7 @@ class AethericWaterGUI:
         self.manager = AethericWaterManager()
         self.current_combo = None
         self.current_avg = None
+        self.script_counter = 1  # For auto-numbering exported scripts
         
         # Configure style
         self.style = ttk.Style()
@@ -723,6 +724,60 @@ class AethericWaterGUI:
         else:
             messagebox.showerror("Error", "Could not find a valid combination")
     
+    def show_script_preview(self, script_content, title="Script Preview"):
+        """Show a preview window with the script content"""
+        preview_window = tk.Toplevel(self.root)
+        preview_window.title(title)
+        preview_window.geometry("700x500")
+        preview_window.configure(bg=self.bg_color)
+
+        # Make it modal and stay on top
+        preview_window.transient(self.root)
+        preview_window.grab_set()
+
+        # Title
+        tk.Label(
+            preview_window,
+            text=title,
+            font=("Georgia", 14, "bold"),
+            bg=self.bg_color,
+            fg=self.highlight_color
+        ).pack(pady=10)
+
+        # Script content
+        text_frame = tk.Frame(preview_window, bg=self.bg_color)
+        text_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
+
+        scrollbar = tk.Scrollbar(text_frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        text_widget = tk.Text(
+            text_frame,
+            wrap=tk.NONE,
+            font=("Consolas", 9),
+            bg="#1a1a1a",
+            fg="#00ff00",
+            insertbackground="white",
+            yscrollcommand=scrollbar.set
+        )
+        text_widget.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.config(command=text_widget.yview)
+
+        text_widget.insert(1.0, script_content)
+        text_widget.config(state=tk.DISABLED)
+
+        # Close button
+        tk.Button(
+            preview_window,
+            text="Close",
+            command=preview_window.destroy,
+            bg=self.accent_color,
+            fg="white",
+            font=("Arial", 10, "bold"),
+            cursor="hand2",
+            width=15
+        ).pack(pady=(0, 10))
+
     def export_script(self):
         """Export picker script for current combination without marking as used"""
         if self.current_combo is None:
@@ -731,10 +786,16 @@ class AethericWaterGUI:
 
         script_content = self.manager.generate_picker_script(self.current_combo)
 
+        # Show preview first
+        self.show_script_preview(script_content, "Razor Picker Script Preview")
+
         # Default to UO Outlands scripts directory
         default_dir = r"C:\Program Files (x86)\Ultima Online Outlands\ClassicUO\Data\Plugins\Assistant\Scripts"
         if not os.path.exists(default_dir):
             default_dir = ""
+
+        # Auto-numbered filename
+        default_filename = f"aetheric_picker_{self.script_counter:03d}.razor"
 
         file_path = filedialog.asksaveasfilename(
             title="Save Razor Picker Script",
@@ -745,7 +806,7 @@ class AethericWaterGUI:
                 ("Text files", "*.txt"),
                 ("All files", "*.*")
             ],
-            initialfile="aetheric_picker.razor"
+            initialfile=default_filename
         )
 
         if file_path:
@@ -753,9 +814,17 @@ class AethericWaterGUI:
                 with open(file_path, 'w', encoding='utf-8') as f:
                     f.write(script_content)
 
+                self.script_counter += 1  # Increment for next export
+
                 messagebox.showinfo(
-                    "Script Saved",
-                    f"Picker script saved to:\n{file_path}"
+                    "Script Saved & Important Reminder",
+                    f"✅ Picker script saved to:\n{file_path}\n\n"
+                    "⚠️ IMPORTANT - WORKFLOW:\n"
+                    "1. CLOSE the UO client completely\n"
+                    "2. Relaunch UO and Razor Enhanced\n"
+                    "3. The new script will now appear in Razor\n"
+                    "4. Load and run the picker script in-game\n\n"
+                    "Note: Razor only loads scripts at startup!"
                 )
             except Exception as e:
                 messagebox.showerror(
@@ -900,9 +969,15 @@ class AethericWaterGUI:
         # Generate and save script
         script_content = self.manager.generate_picker_script(combination)
 
+        # Show preview first
+        self.show_script_preview(script_content, "Razor Picker Script Preview (from Used)")
+
         default_dir = r"C:\Program Files (x86)\Ultima Online Outlands\ClassicUO\Data\Plugins\Assistant\Scripts"
         if not os.path.exists(default_dir):
             default_dir = ""
+
+        # Auto-numbered filename for used waters
+        default_filename = f"aetheric_picker_used_{self.script_counter:03d}.razor"
 
         file_path = filedialog.asksaveasfilename(
             title="Save Razor Picker Script (from Used Waters)",
@@ -913,7 +988,7 @@ class AethericWaterGUI:
                 ("Text files", "*.txt"),
                 ("All files", "*.*")
             ],
-            initialfile="aetheric_picker_used.razor"
+            initialfile=default_filename
         )
 
         if file_path:
@@ -921,10 +996,21 @@ class AethericWaterGUI:
                 with open(file_path, 'w', encoding='utf-8') as f:
                     f.write(script_content)
 
+                self.script_counter += 1  # Increment for next export
+
                 water_list = "\n".join([f"  ID#{w['id']:03d}: {w['value']:.3f}" for w in combination])
+                avg = sum(w['value'] for w in combination) / 3
                 messagebox.showinfo(
-                    "Script Saved",
-                    f"Picker script saved with these waters:\n{water_list}\n\nSaved to:\n{file_path}"
+                    "Script Saved & Important Reminder",
+                    f"✅ Picker script saved with these waters:\n{water_list}\n"
+                    f"Average: {avg:.6f}\n\n"
+                    f"Saved to:\n{file_path}\n\n"
+                    "⚠️ IMPORTANT - WORKFLOW:\n"
+                    "1. CLOSE the UO client completely\n"
+                    "2. Relaunch UO and Razor Enhanced\n"
+                    "3. The new script will now appear in Razor\n"
+                    "4. Load and run the picker script in-game\n\n"
+                    "Note: Razor only loads scripts at startup!"
                 )
             except Exception as e:
                 messagebox.showerror(

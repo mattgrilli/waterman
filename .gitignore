@@ -40,6 +40,7 @@ build/
 dist/
 *.egg-info/
 .eggs/
+*.spec
 
 # Auto-generated scripts (keep templates)
 aetheric_picker.razor
@@ -47,3 +48,6 @@ aetheric_picker_used.razor
 # But keep the templates:
 !aetheric_picker_template.razor
 !aetheric_scanner.razor
+
+# Build scripts (optional - can be included if you want others to build)
+# build_exe.bat

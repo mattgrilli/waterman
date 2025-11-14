@@ -14,11 +14,17 @@ A Python GUI tool for Ultima Online: Outlands that helps you find the optimal co
 ## 🚀 Quick Start
 
 ### Requirements
-- Python 3.6 or higher (no additional libraries needed - uses built-in tkinter)
+- **For .exe users**: Nothing! Just download and run
+- **For Python users**: Python 3.6+ (uses built-in tkinter)
 - Ultima Online: Outlands with Razor Enhanced
 
 ### Installation
 
+**Option 1: Use the Executable (Easiest!)**
+1. Download `AethericWaterOptimizer.exe` from the releases
+2. Double-click to run - no Python installation needed!
+
+**Option 2: Run from Python**
 1. Clone or download this repository
 2. Run the Python GUI:
    ```bash

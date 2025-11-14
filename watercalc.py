@@ -165,6 +165,48 @@ endif
 '''
         return script
 
+    def generate_scanner_script(self) -> str:
+        """Generate Razor scanner script for scanning all aetheric waters"""
+        script = '''#############################################
+# Aetheric Water Scanner – Outlands / Razor
+#
+# HOW TO USE:
+#  1. Put all Aetheric Water items in your backpack
+#  2. Run this script
+#  3. Check your journal/system messages for the output
+#  4. Copy the output to import into the Python GUI
+#
+# This script scans all aetheric waters in your
+# backpack and displays their values in the journal.
+#############################################
+
+overhead "Scanning all aetheric waters in backpack..." 88
+
+@clearignore
+getlabel backpack pingcheck
+
+@setvar! count 0
+
+# Loop through all Aetheric Water (ID 3902) in backpack
+while findtype 3902 backpack as ess
+    getlabel ess desc
+
+    # Display the full label
+    sysmsg "{{desc}}" 88
+
+    @ignore ess
+    @setvar! count count + 1
+    wait 100
+endwhile
+
+@clearignore
+
+overhead "Scan complete! Found {{count}} aetheric waters." 68
+sysmsg "Scan complete! Found {{count}} aetheric waters." 68
+sysmsg "Copy the values above and import into Python GUI" 68
+'''
+        return script
+
     def import_from_text(self, text: str) -> List[float]:
         """Parse aetheric water values from text (e.g., journal export or manual entry)"""
         values = []
@@ -283,6 +325,18 @@ class AethericWaterGUI:
             text="📂 Import",
             command=self.import_from_file,
             bg=self.accent_color,
+            fg="white",
+            font=("Arial", 9, "bold"),
+            cursor="hand2",
+            relief=tk.RAISED,
+            bd=2
+        ).pack(side=tk.LEFT, fill=tk.X, expand=True, padx=2)
+
+        tk.Button(
+            button_frame,
+            text="📤 Export Scanner",
+            command=self.export_scanner_script,
+            bg="#2c5f6e",
             fg="white",
             font=("Arial", 9, "bold"),
             cursor="hand2",
@@ -562,7 +616,48 @@ class AethericWaterGUI:
                 "Import Error",
                 f"Failed to import file:\n{str(e)}"
             )
-    
+
+    def export_scanner_script(self):
+        """Export the scanner script to scan all aetheric waters in-game"""
+        script_content = self.manager.generate_scanner_script()
+
+        # Default to UO Outlands scripts directory
+        default_dir = r"C:\Program Files (x86)\Ultima Online Outlands\ClassicUO\Data\Plugins\Assistant\Scripts"
+        if not os.path.exists(default_dir):
+            default_dir = ""
+
+        file_path = filedialog.asksaveasfilename(
+            title="Save Razor Scanner Script",
+            initialdir=default_dir,
+            defaultextension=".razor",
+            filetypes=[
+                ("Razor scripts", "*.razor"),
+                ("Text files", "*.txt"),
+                ("All files", "*.*")
+            ],
+            initialfile="aetheric_scanner.razor"
+        )
+
+        if file_path:
+            try:
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    f.write(script_content)
+
+                messagebox.showinfo(
+                    "Scanner Script Saved",
+                    f"Scanner script saved to:\n{file_path}\n\n"
+                    "To use:\n"
+                    "1. Load script in Razor Enhanced\n"
+                    "2. Put all aetheric waters in backpack\n"
+                    "3. Run script to scan values to journal\n"
+                    "4. Use Import button to load values into this app"
+                )
+            except Exception as e:
+                messagebox.showerror(
+                    "Save Error",
+                    f"Failed to save scanner script:\n{str(e)}"
+                )
+
     def find_combination(self):
         """Find best combination of 3 waters"""
         try:

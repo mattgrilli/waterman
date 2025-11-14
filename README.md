@@ -33,14 +33,24 @@ A Python GUI tool for Ultima Online: Outlands that helps you find the optimal co
 
 ## 📖 How to Use
 
-### Step 1: Scan Your Waters (In-Game)
+### Step 1: Get the Scanner Script
+
+**Option A: Export from App (Easiest!)**
+1. Click **📤 Export Scanner** in the Python GUI
+2. Save the script to your Razor scripts folder
+3. Done! Script is ready to use
+
+**Option B: Use Included File**
+1. Use the **aetheric_scanner.razor** file from the repository
+
+### Step 2: Scan Your Waters (In-Game)
 
 1. Load the **aetheric_scanner.razor** script into Razor Enhanced
 2. Put all your aetheric waters in your backpack
 3. Run the script
 4. Your journal will display all water values
 
-### Step 2: Import to Python GUI
+### Step 3: Import to Python GUI
 
 **Option A: Import from Journal File**
 1. Copy your journal output to a text file
@@ -53,7 +63,7 @@ A Python GUI tool for Ultima Online: Outlands that helps you find the optimal co
 2. Example: `8.820, 4.540, 5.115`
 3. Click **➕ Add Waters** or press Enter
 
-### Step 3: Find Best Combination
+### Step 4: Find Best Combination
 
 1. Enter your target average (default is 7.0)
 2. Click **🔍 Find Best**
@@ -62,20 +72,20 @@ A Python GUI tool for Ultima Online: Outlands that helps you find the optimal co
    - Average value
    - Difference from target
 
-### Step 4: Export Picker Script
+### Step 5: Export Picker Script
 
 1. Click **📝 Export Script**
 2. Save the auto-generated Razor script
 3. The script contains the exact 3 water values you need!
 
-### Step 5: Collect Waters (In-Game)
+### Step 6: Collect Waters (In-Game)
 
 1. Load your exported picker script into Razor Enhanced
 2. Put all your waters in your backpack
 3. Run the script
 4. It automatically finds and organizes those 3 specific waters!
 
-### Step 6: Mark as Used (Optional)
+### Step 7: Mark as Used (Optional)
 
 1. After collecting, click **✓ Use Combination** in the Python GUI
 2. The waters move from "Available" to "Used"
@@ -97,6 +107,7 @@ A Python GUI tool for Ultima Online: Outlands that helps you find the optimal co
 ### Buttons
 - **➕ Add Waters** - Manually add comma-separated values
 - **📂 Import** - Import from journal text file
+- **📤 Export Scanner** - Export the scanner script to scan all your waters in-game
 - **🔍 Find Best** - Calculate optimal combination
 - **📝 Export Script** - Generate Razor picker script (doesn't mark as used)
 - **✓ Use Combination** - Mark waters as used (moves to used list)
